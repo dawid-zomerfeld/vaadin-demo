@@ -30,6 +30,7 @@ dependencies {
 
 	compile group: 'org.springframework.data', name: 'spring-data-jpa', version: '2.3.2.RELEASE'
 	testCompile group: 'com.h2database', name: 'h2', version: '1.4.200'
+	compile('javax.persistence:javax.persistence-api:2.2')
 
 	implementation('com.vaadin:vaadin-spring-boot-starter') {
 //         Webjars are only needed when running in Vaadin 13 compatibility mode

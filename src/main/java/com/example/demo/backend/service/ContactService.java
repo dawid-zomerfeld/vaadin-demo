@@ -7,7 +7,6 @@ import com.example.demo.backend.entity.Company;
 import com.example.demo.backend.entity.Contact;
 import com.example.demo.backend.repository.CompanyRepository;
 import com.example.demo.backend.repository.ContactRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -24,7 +23,6 @@ public class ContactService {
     private ContactRepository contactRepository;
     private CompanyRepository companyRepository;
 
-    @Autowired
     public ContactService(ContactRepository contactRepository,
                           CompanyRepository companyRepository) {
         this.contactRepository = contactRepository;

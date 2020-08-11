@@ -1,8 +1,9 @@
-package com.example.demo.backend.service;
+package com.nextbuy.demo.service;
 
 
-import com.example.demo.backend.entity.Company;
-import com.example.demo.backend.repository.CompanyRepository;
+
+import com.nextbuy.demo.model.Company;
+import com.nextbuy.demo.repository.CompanyRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

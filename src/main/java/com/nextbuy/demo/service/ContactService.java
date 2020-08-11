@@ -1,12 +1,13 @@
-package com.example.demo.backend.service;
+package com.nextbuy.demo.service;
 
 
 
 
-import com.example.demo.backend.entity.Company;
-import com.example.demo.backend.entity.Contact;
-import com.example.demo.backend.repository.CompanyRepository;
-import com.example.demo.backend.repository.ContactRepository;
+
+import com.nextbuy.demo.model.Company;
+import com.nextbuy.demo.model.Contact;
+import com.nextbuy.demo.repository.CompanyRepository;
+import com.nextbuy.demo.repository.ContactRepository;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;

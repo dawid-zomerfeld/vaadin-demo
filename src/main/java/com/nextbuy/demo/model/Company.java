@@ -1,6 +1,8 @@
-package com.example.demo.backend.entity;
+package com.nextbuy.demo.model;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import java.util.LinkedList;
 import java.util.List;
 

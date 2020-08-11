@@ -1,4 +1,4 @@
-package com.example.demo.backend.entity;
+package com.nextbuy.demo.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;

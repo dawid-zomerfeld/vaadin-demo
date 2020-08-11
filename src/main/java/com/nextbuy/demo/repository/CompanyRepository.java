@@ -1,6 +1,7 @@
-package com.example.demo.backend.repository;
+package com.nextbuy.demo.repository;
 
-import com.example.demo.backend.entity.Company;
+
+import com.nextbuy.demo.model.Company;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

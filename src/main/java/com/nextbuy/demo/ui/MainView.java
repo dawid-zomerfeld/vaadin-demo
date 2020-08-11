@@ -2,6 +2,7 @@ package com.nextbuy.demo.ui;
 
 import com.nextbuy.demo.model.Company;
 import com.nextbuy.demo.model.Contact;
+import com.nextbuy.demo.service.CompanyService;
 import com.nextbuy.demo.service.ContactService;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.grid.Grid;
@@ -10,8 +11,6 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.Route;
-
-
 
 @Route("")
 @CssImport("./styles/shared-styles.css")
@@ -23,14 +22,15 @@ public class MainView extends VerticalLayout {
 
     private ContactService contactService;
 
-    public MainView(ContactService contactService) {
+    public MainView(ContactService contactService,
+                    CompanyService companyService) {
         this.contactService = contactService;
         addClassName("list-view");
         setSizeFull();
         configureGrid();
         configureFilter();
 
-        form = new ContactForm();
+        form = new ContactForm(companyService.findAll());
 
         Div content = new Div(grid, form);
         content.addClassName("content");

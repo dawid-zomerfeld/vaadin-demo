@@ -1,0 +1,19 @@
+.drop-here {
+    background: var(--lumo-success-color-50pct);
+}
+
+.wrapper {
+    height: 50%;
+    background-color: var(--lumo-shade-10pct);
+    align-items: center;
+}
+
+.wrapper label {
+    font-size: var(--lumo-font-size-l);
+}
+
+.column {
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+}

@@ -105,8 +105,6 @@ public class ListView extends VerticalLayout {
         return toolbar;
     }
 
-
-
     void addContact() {
         grid.asSingleSelect().clear();
         editContact(new Contact());

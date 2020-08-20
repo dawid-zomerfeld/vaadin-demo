@@ -2,6 +2,7 @@ package com.nextbuy.demo.ui;
 
 import com.nextbuy.demo.ui.views.dashboard.DashboardView;
 import com.nextbuy.demo.ui.views.list.ListView;
+import com.nextbuy.demo.ui.views.treegrid.TreeGridView;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.dependency.CssImport;
@@ -36,7 +37,10 @@ public class MainLayout extends AppLayout {
         RouterLink listLink = new RouterLink("List", ListView.class);
         listLink.setHighlightCondition(HighlightConditions.sameLocation());
 
-        addToDrawer(new VerticalLayout(listLink, new RouterLink("Dashboard", DashboardView.class)
-        ));
+
+        addToDrawer(new VerticalLayout(listLink, new RouterLink("TreeGrid", TreeGridView.class)));
+        addToDrawer(new VerticalLayout(listLink, new RouterLink("Dashboard", DashboardView.class)));
+
+
     }
 }

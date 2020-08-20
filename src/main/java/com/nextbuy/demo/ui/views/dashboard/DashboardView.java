@@ -1,6 +1,7 @@
 package com.nextbuy.demo.ui.views.dashboard;
 
 
+import com.nextbuy.demo.model.Company;
 import com.nextbuy.demo.ui.MainLayout;
 
 import com.vaadin.flow.component.button.Button;
@@ -14,6 +15,7 @@ import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.page.Push;
+import com.vaadin.flow.component.treegrid.TreeGrid;
 import com.vaadin.flow.dom.Style;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -32,7 +34,7 @@ public class DashboardView extends HorizontalLayout {
     public DashboardView() {
         setSizeFull();
         setAlignItems(Alignment.CENTER);
-
+        TreeGrid<Company> grid = new TreeGrid<>();
         VerticalLayout columnAWrapper = new VerticalLayout();
         columnAWrapper.addClassName("wrapper");
         columnA = new VerticalLayout();

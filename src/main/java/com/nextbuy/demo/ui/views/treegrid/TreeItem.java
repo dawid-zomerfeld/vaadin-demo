@@ -12,9 +12,11 @@ import java.util.List;
 public class TreeItem{
 
     private String name;
+    private TreeItem parent;
     private List<TreeItem> children = new ArrayList<>();
 
-    public TreeItem(String name) {
+    public TreeItem(TreeItem parent, String name) {
+        this.parent = parent;
         this.name = name;
     }
 

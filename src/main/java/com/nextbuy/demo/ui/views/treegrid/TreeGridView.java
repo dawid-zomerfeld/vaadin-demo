@@ -5,17 +5,12 @@ import com.vaadin.flow.component.grid.dnd.GridDropLocation;
 import com.vaadin.flow.component.grid.dnd.GridDropMode;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.treegrid.TreeGrid;
-import com.vaadin.flow.data.provider.DataProvider;
-import com.vaadin.flow.data.provider.DataProviderListener;
-import com.vaadin.flow.data.provider.Query;
 import com.vaadin.flow.data.provider.hierarchy.TreeData;
 import com.vaadin.flow.data.provider.hierarchy.TreeDataProvider;
 import com.vaadin.flow.function.ValueProvider;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.shared.Registration;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
@@ -54,6 +49,15 @@ public class TreeGridView extends HorizontalLayout {
 //    }
 
 
+    private void fillTreeData(TreeData<TreeItem> data, TreeItem item) {
+        List<TreeItem> children = item.getChildren();
+        data.addItems(item, children);
+
+        for (TreeItem child : children)
+            fillTreeData(data, child);
+    }
+
+
     public TreeGridView() {
         TreeItem rootItem = getTreeStructure();
 
@@ -63,11 +67,15 @@ public class TreeGridView extends HorizontalLayout {
         grid.addHierarchyColumn(treeItem -> treeItem.getName()).setHeader("TreeItem");
 
 
-//        TreeData<TreeItem> objectTreeData = new TreeData<>();
-//        TreeDataProvider<TreeItem> treeItemTreeDataProvider = new TreeDataProvider<TreeItem>(new TreeData<>());
+
+        TreeData<TreeItem> data = new TreeData<>();
+        data.addItems(null, rootItem);
+        fillTreeData(data, rootItem);
+        TreeDataProvider<TreeItem> dataProvider = new TreeDataProvider<>(data);
 
 
-        grid.setItems(List.of(rootItem).stream(), (ValueProvider<TreeItem, Stream<TreeItem>>) treeItem -> treeItem.getChildren().stream());
+//        grid.setItems(List.of(rootItem).stream(), (ValueProvider<TreeItem, Stream<TreeItem>>) treeItem -> treeItem.getChildren().stream());
+        grid.setDataProvider(dataProvider);
         add(grid);
 
         // Logika Drag and drop
@@ -83,13 +91,11 @@ public class TreeGridView extends HorizontalLayout {
             TreeItem targetItem = event.getDropTargetItem().get();
             GridDropLocation dropLocation = event.getDropLocation();
 
-            sourceItem.getParent().getChildren().remove(sourceItem);
-            if(dropLocation == GridDropLocation.ON_TOP) {
-                targetItem.getChildren().add(sourceItem);
-                sourceItem.setParent(targetItem);
-            }else {
-                targetItem.getParent().getChildren().add(sourceItem);
-                sourceItem.setParent(targetItem.getParent());
+            data.removeItem(sourceItem);
+            if (dropLocation == GridDropLocation.ON_TOP) {
+                data.addItems(targetItem, sourceItem);
+            } else  {
+                data.addItems( targetItem.getParent(),  sourceItem);
             }
 
             grid.getDataProvider().refreshAll();
@@ -142,16 +148,16 @@ public class TreeGridView extends HorizontalLayout {
         TreeItem rootItem = new TreeItem(null, "root");
 
         TreeItem parent1 = new TreeItem(rootItem, "1");
-        TreeItem child11 = new TreeItem(parent1,"1-1");
-        TreeItem child12 = new TreeItem(parent1,"1-2");
+        TreeItem child11 = new TreeItem(parent1, "1-1");
+        TreeItem child12 = new TreeItem(parent1, "1-2");
 
 
         List<TreeItem> children1 = parent1.getChildren();
         children1.add(child11);
         children1.add(child12);
 
-        TreeItem child111 = new TreeItem(child11,"1-1-1");
-        TreeItem child112 = new TreeItem(child11,"1-1-2");
+        TreeItem child111 = new TreeItem(child11, "1-1-1");
+        TreeItem child112 = new TreeItem(child11, "1-1-2");
 
 
         List<TreeItem> children4 = child11.getChildren();
@@ -159,17 +165,17 @@ public class TreeGridView extends HorizontalLayout {
         children4.add(child112);
 
 
-        TreeItem parent2 = new TreeItem(rootItem,"2");
-        TreeItem child21 = new TreeItem(parent2,"2-1");
-        TreeItem child22 = new TreeItem(parent2,"2-2");
+        TreeItem parent2 = new TreeItem(rootItem, "2");
+        TreeItem child21 = new TreeItem(parent2, "2-1");
+        TreeItem child22 = new TreeItem(parent2, "2-2");
 
 
         List<TreeItem> children2 = parent2.getChildren();
         children2.add(child21);
         children2.add(child22);
 
-        TreeItem child211 = new TreeItem(child21,"2-1-1");
-        TreeItem child212 = new TreeItem(child21,"2-1-2");
+        TreeItem child211 = new TreeItem(child21, "2-1-1");
+        TreeItem child212 = new TreeItem(child21, "2-1-2");
 
 
         List<TreeItem> children3 = child21.getChildren();

@@ -34,7 +34,6 @@ public class DashboardView extends HorizontalLayout {
     public DashboardView() {
         setSizeFull();
         setAlignItems(Alignment.CENTER);
-        TreeGrid<Company> grid = new TreeGrid<>();
         VerticalLayout columnAWrapper = new VerticalLayout();
         columnAWrapper.addClassName("wrapper");
         columnA = new VerticalLayout();

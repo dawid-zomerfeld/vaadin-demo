@@ -1,16 +1,19 @@
 package com.nextbuy.demo.ui.views.treegrid;
 
-import com.nextbuy.demo.model.Company;
 import com.nextbuy.demo.ui.MainLayout;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.dnd.DragSource;
+import com.vaadin.flow.component.dnd.DropEffect;
+import com.vaadin.flow.component.dnd.DropTarget;
+import com.vaadin.flow.component.grid.dnd.GridDropMode;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.treegrid.TreeGrid;
-import com.vaadin.flow.data.provider.hierarchy.AbstractBackEndHierarchicalDataProvider;
-import com.vaadin.flow.data.provider.hierarchy.HierarchicalDataProvider;
-import com.vaadin.flow.data.provider.hierarchy.HierarchicalQuery;
+import com.vaadin.flow.function.SerializablePredicate;
 import com.vaadin.flow.function.ValueProvider;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -18,64 +21,104 @@ import java.util.stream.Stream;
 @Route(value = "treegrid", layout = MainLayout.class)
 public class TreeGridView extends HorizontalLayout {
 
+
+    public void setRowsDraggable (boolean rowsRraggable) {
+        DragSource.create(this).setDraggable(false);
+        getElement().setProperty("rowsDraggable", rowsRraggable);
+    }
+
+    public void setDropMode(GridDropMode dropMode) {
+        DropTarget.create(this).setActive(false);
+        getElement().setProperty("dropMode",
+                dropMode == null ? null : dropMode.getClientName());
+    }
+
+
+
     public TreeGridView() {
         TreeGrid<TreeItem> grid = new TreeGrid<>();
+        grid.setRowsDraggable(true);
 
-        TreeItem treeItem = new TreeItem("1");
-        TreeItem treeItem2 = new TreeItem("1-1");
-        TreeItem treeItem3 = new TreeItem("1-2");
+        DropTarget<TreeGrid> dropTarget = DropTarget.create(grid);
 
-        TreeItem treeItem4 = new TreeItem("2");
-        TreeItem treeItem5 = new TreeItem("2-1");
-        TreeItem treeItem6 = new TreeItem("2-2");
+        dropTarget.addDropListener(event -> {
+            // move the dragged component to inside the drop target component
+            if (event.getDropEffect() == DropEffect.MOVE) {
+                // the drag source is available only if the dragged component is from
+                // the same UI as the drop target
+//                event.getDragSourceComponent().ifPresent(box::add);
 
-        TreeItem treeItem8 = new TreeItem("2-1-1");
-        TreeItem treeItem9 = new TreeItem("2-1-2");
+                event.getDragData().ifPresent(data -> {
+                    // the server side drag data is available if it has been set and the
+                    // component was dragged from the same UI as the drop target
+                });
+            }
+        });
 
-
-
-
-        List<TreeItem> children = treeItem.getChildren();
-        children.add(treeItem2);
-        children.add(treeItem3);
-
-        List<TreeItem> children2 = treeItem4.getChildren();
-        children2.add(treeItem5);
-        children2.add(treeItem6);
-
-        List<TreeItem> children3 = treeItem5.getChildren();
-        children3.add(treeItem8);
-        children3.add(treeItem9);
-
-        grid.addHierarchyColumn(TreeItem::getName).setHeader("TreeItem");
+        TreeItem rootItem = new TreeItem("root");
 
 
-        HierarchicalDataProvider dataProvider =
-                new AbstractBackEndHierarchicalDataProvider<TreeItem, Void>() {
+        TreeItem parent1 = new TreeItem("1");
+        TreeItem child11 = new TreeItem("1-1");
+        TreeItem child12 = new TreeItem("1-2");
 
-                    @Override
-                    public int getChildCount(HierarchicalQuery<TreeItem, Void> query) {
-                        if(query.getParent() == null)
-                            return 0;
-                        return query.getParent().getChildren().size();
-                    }
+        List<TreeItem> children1 = parent1.getChildren();
+        children1.add(child11);
+        children1.add(child12);
 
-                    @Override
-                    public boolean hasChildren(TreeItem item) {
-                        return !item.getChildren().isEmpty();
-                    }
+        TreeItem child111 = new TreeItem("1-1-1");
+        TreeItem child112 = new TreeItem("1-1-2");
 
-                    @Override
-                    protected Stream<TreeItem> fetchChildrenFromBackEnd(
-                            HierarchicalQuery<TreeItem, Void> query) {
-                        return query.getParent().getChildren().stream();
-                    }
-                };
-
-        grid.setItems(List.of(treeItem, treeItem4).stream(), (ValueProvider<TreeItem, Stream<TreeItem>>) treeItem1 -> treeItem1.getChildren().stream());
+        List<TreeItem> children4 = child11.getChildren();
+        children4.add(child111);
+        children4.add(child112);
 
 
-//        grid.setDataProvider(dataProvider);
+
+
+
+
+        TreeItem parent2 = new TreeItem("2");
+        TreeItem child21 = new TreeItem("2-1");
+        TreeItem child22 = new TreeItem("2-2");
+
+
+
+        List<TreeItem> children2 = parent2.getChildren();
+        children2.add(child21);
+        children2.add(child22);
+
+        TreeItem child211 = new TreeItem("2-1-1");
+        TreeItem child212 = new TreeItem("2-1-2");
+
+
+
+        List<TreeItem> children3 = child21.getChildren();
+        children3.add(child211);
+        children3.add(child212);
+
+        List<TreeItem> rootChildren = rootItem.getChildren();
+        rootChildren.add(parent1);
+        rootChildren.add(parent2);
+
+        grid.addHierarchyColumn(treeItem -> treeItem.getName()).setHeader("TreeItem");
+
+
+        LinkedList<TreeItem> rootElements = new LinkedList<>();
+        rootElements.add(rootItem);
+
+
+
+        grid.setItems(rootElements.stream(), new ValueProvider<TreeItem, Stream<TreeItem>>() {
+            @Override
+            public Stream<TreeItem> apply(TreeItem treeItem) {
+                List<TreeItem> children = treeItem.getChildren();
+                return children.stream();
+            }
+        });
+
+
+
         add(grid);
 
     }

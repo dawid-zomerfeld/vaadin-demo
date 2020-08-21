@@ -1,5 +1,6 @@
 package com.nextbuy.demo.ui.views.treegrid;
 
+import com.vaadin.flow.component.Component;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,7 +9,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class TreeItem {
+public class TreeItem{
 
     private String name;
     private List<TreeItem> children = new ArrayList<>();
